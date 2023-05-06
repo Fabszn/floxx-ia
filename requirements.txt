@@ -1,7 +1,7 @@
 #web
 Flask==2.2.3
 Flask-Cors==3.0.10
-
+ultralytics==8.0.93
 
 # Ultralytics requirements
 # Usage: pip install -r requirements.txt
