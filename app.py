@@ -14,7 +14,7 @@ def hello_world():
 @app.route("/photo", methods=['POST'])
 def photo():
     f = request.files["file"]
-    f.save('/Users/fsznajderman/Documents/FLOXX/IA/floxx-ia/ourra22.jpeg')
+    #f.save('/Users/fsznajderman/Documents/FLOXX/IA/floxx-ia/ourra22.jpeg')
     result = runIA("name")
     response = jsonify({'nbp': result})
 
