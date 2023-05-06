@@ -15,7 +15,8 @@ def hello_world():
 def photo():
     f = request.files["file"]
     f.save('/Users/fsznajderman/Documents/FLOXX/IA/floxx-ia/ourra22.jpeg')
-    response = jsonify({'data': 'example data'})
+    result = runIA("name")
+    response = jsonify({'nbp': result})
 
     # Set the Access-Control-Allow-Origin header to allow requests from any domain
     response.headers.add('Access-Control-Allow-Origin', '*')
