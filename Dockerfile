@@ -1,22 +1,27 @@
-# start by pulling the python image
-FROM python:3.11.3-alpine
-
-RUN apk add --no-cache gcc g++ musl-dev
+FROM ubuntu:rolling
 
 
-# copy the requirements file into the image
-COPY ./requirements.txt /app/requirements.txt
 
-# switch working directory
-WORKDIR /app
+ENV DEBIAN_FRONTEND noninteractive
+RUN apt update
+RUN TZ=Etc/UTC apt install -y tzdata
+RUN apt install --no-install-recommends -y python3-pip git zip curl htop libgl1-mesa-glx libglib2.0-0 libpython3-dev gnupg g++
+# RUN alias python=python3
 
-# install the dependencies and packages in the requirements file
-RUN pip install -r requirements.txt
+#RUN python3 --version
 
-# copy every content from the local file to the image
-COPY . /app
+# Install pip packages
+#RUN python3 -m pip install --upgrade pip wheel
+#RUN pip install --no-cache '.[export]' albumentations gsutil notebook \
+#        --extra-index-url https://download.pytorch.org/whl/cpu
 
-# configure the container to run in an executed manner
-ENTRYPOINT [ "python" ]
+# Cleanup
+ENV DEBIAN_FRONTEND teletype
 
-CMD ["app.py" ]
+RUN echo "print('hello')" > hello.py
+
+#RUN pip install -r requirements
+
+ENTRYPOINT [ "python3" ]
+
+CMD ["hello.py"]
