@@ -8,12 +8,12 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 
 @app.route("/")
 def hello_world():
-    runIA("name")
-    return "<p>Hello, World!</p>"
+    result = runIA("name")
+    return jsonify({'nbp': result})
 
 @app.route("/photo", methods=['POST'])
 def photo():
-    f = request.files["file"]
+    #f = request.files["file"]
     #f.save('/Users/fsznajderman/Documents/FLOXX/IA/floxx-ia/ourra22.jpeg')
     result = runIA("name")
     response = jsonify({'nbp': result})
