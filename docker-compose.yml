@@ -1,7 +1,0 @@
----
-version: '3.9'
-services:
-  floxxia:
-    image: floxx-ia:latest
-    ports:
-      - "8000:8082"

@@ -1,13 +1,13 @@
 from ultralytics import YOLO
 
-def runIA(name):
+
+model = YOLO("./model/yolov8n-face.pt")  # load a pretrained model (recommended for training)
+
+def runIA(image):
 
 
-    # Load a model
-    model = YOLO("./model/yolov8n-face.pt")  # load a pretrained model (recommended for training)
 
-    
-    results = model("./ia/test2.jpeg")  # predict on an image
+    results = model(image)  # predict on an image
 
     numberOfPerson = 0
     for result in results:

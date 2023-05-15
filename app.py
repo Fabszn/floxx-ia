@@ -1,6 +1,14 @@
+from PIL.Image import Image
 from flask import Flask, request , jsonify
+from werkzeug.datastructures import FileStorage
+
 from ia.detector import runIA
 from flask_cors import CORS,cross_origin
+
+import numpy as np
+from PIL import Image
+from io import BytesIO
+
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -13,9 +21,18 @@ def hello_world():
 
 @app.route("/photo", methods=['POST'])
 def photo():
-    #f = request.files["file"]
-    #f.save('/Users/fsznajderman/Documents/FLOXX/IA/floxx-ia/ourra22.jpeg')
-    result = runIA("name")
+    impage_posted: FileStorage = request.files["file"]
+
+    image_stream = BytesIO(impage_posted.read())
+
+    # Ouvrir l'image avec PIL
+    image_pil: Image = Image.open(image_stream)
+
+
+    
+    #Save on Cellar Clevercloud FS
+    
+    result = runIA(image_pil)
     response = jsonify({'nbp': result})
 
     # Set the Access-Control-Allow-Origin header to allow requests from any domain
