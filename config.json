@@ -1,0 +1,12 @@
+{
+  "environment": "local",
+  "local": {
+    "path": "/Users/fsznajderman/Documents/downloadImage/"
+  },
+  "cellar": {
+    "key": "GD923RRIV0DXE0DHONAL",
+    "user": "VDGDp0BTRbWhqCRmXXGbR2ga0L3xmf67uHP2AaDV",
+    "url":"cellar-c2.services.clever-cloud.com"
+    
+  }
+}

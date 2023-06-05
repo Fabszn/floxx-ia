@@ -2,7 +2,7 @@ client-web.html
 ourra22.jpeg
 test.py
 uploaded_file.txt
-__pycache__/**
+/**/__pycache__/**
 .DS_Store
 ia/__pycache__/
 env/
