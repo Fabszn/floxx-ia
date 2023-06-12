@@ -26,7 +26,7 @@ class LocalStorage(Storage):
         self.path = conf.localconfig().path
 
     def saveFile(self, image: Image, filename: str | None) -> None:
-        print(image)
+
         image.save(self.path + str(time.time_ns()) + '_' + filename, 'JPEG')
 
 
@@ -47,7 +47,7 @@ class CellarStorage(Storage):
         image.save(image_bytes, format='JPEG')
         image_bytes.seek(0)
 
-        k = conn.get_bucket("floxx-ia-images").new_key(filename)
+        k = conn.get_bucket("floxx-ia-images").new_key(str(time.time_ns()) + '_' + filename)
         k.set_contents_from_file(image_bytes)
 
 
