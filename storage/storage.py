@@ -18,6 +18,9 @@ class Storage(ABC):
     def saveFile(self, image: Image, filename: str | None) -> None:
         pass
 
+    def readFile(self, key: str) -> Image:
+        pass
+
 
 class LocalStorage(Storage):
     path: str = None
@@ -26,8 +29,10 @@ class LocalStorage(Storage):
         self.path = conf.localconfig().path
 
     def saveFile(self, image: Image, filename: str | None) -> None:
-
         image.save(self.path + str(time.time_ns()) + '_' + filename, 'JPEG')
+
+    def readFile(self, key: str) -> Image:
+        return Image.open(self.path + "/" + key)
 
 
 class CellarStorage(Storage):
@@ -39,16 +44,31 @@ class CellarStorage(Storage):
         os.environ["AWS_SECRET_ACCESS_KEY"] = self.cellar_conf.key
 
     def saveFile(self, image: Image, filename: str | None) -> None:
-        cf = OrdinaryCallingFormat()  # This mean that you _can't_ use upper case name
-        conn = S3Connection(aws_access_key_id=self.cellar_conf.key, aws_secret_access_key=self.cellar_conf.user,
-                            host=self.cellar_conf.url, calling_format=cf)
+        conn = self.getS3connection()
 
         image_bytes = BytesIO()
         image.save(image_bytes, format='JPEG')
         image_bytes.seek(0)
 
-        k = conn.get_bucket("floxx-ia-images").new_key(str(time.time_ns()) + '_' + filename)
-        k.set_contents_from_file(image_bytes)
+        bucket = conn.get_bucket("floxx-ia-images").new_key(str(time.time_ns()) + '_' + filename)
+        bucket.set_contents_from_file(image_bytes, filename)
+
+    def readFile(self, key: str) -> Image:
+        conn = self.getS3connection()
+        bu = conn.get_bucket("floxx-ia-images")
+
+        s3_object = bu.get_key(key)
+        if s3_object == None:
+            return None
+        else:
+            s: bytes = s3_object.get_contents_as_string()
+            return Image.open(BytesIO(s))
+
+    def getS3connection(self):
+        cf = OrdinaryCallingFormat()  # This mean that you _can't_ use upper case name
+        conn = S3Connection(aws_access_key_id=self.cellar_conf.key, aws_secret_access_key=self.cellar_conf.user,
+                            host=self.cellar_conf.url, calling_format=cf)
+        return conn
 
 
 class StorageBuilder:

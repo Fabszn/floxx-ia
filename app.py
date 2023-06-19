@@ -18,9 +18,16 @@ cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 
-@app.route("/")
-def hello_world():
-    return jsonify({'localPath': appConfig.localconfig().path})
+
+@app.route("/detect/<idslot>", methods=['POST'])
+def photo(idslot:str):
+    img = storage.readFile(idslot)
+    if img == None :
+        response = jsonify({'nbp': result})
+        response.status = 400
+        response.content_type = "application/json"
+
+        return response
 
 
 @app.route("/photo", methods=['POST'])
